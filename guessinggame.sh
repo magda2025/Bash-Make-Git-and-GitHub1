@@ -1,30 +1,34 @@
 bash
 #!/bin/bash
 
+function count_files {
+    echo $(ls -1 | wc -l)
+}
+
 function play_game {
-    local number=$(( RANDOM % 100 + 1 ))
+    local file_count=$(count_files)
     local guess=0
-    local attempts=0
 
-    echo "Guess the number between 1 and 100!"
+    echo "Welcome to the Guessing Game!"
+    echo "How many files are in the current directory?"
 
-    while [ $guess -ne $number ]; do
+    while [ $guess -ne $file_count ]; do
         read -p "Enter your guess: " guess
-        attempts=$(( attempts + 1 ))
 
         if ! [[ $guess =~ ^[0-9]+$ ]]; then
-            echo "Please enter a valid number."
+            echo "Invalid input. Please enter a number."
             continue
         fi
 
-        if [ $guess -lt $number ]; then
-            echo "Too low!"
-        elif [ $guess -gt $number ]; then
-            echo "Too high!"
+        if [ $guess -lt $file_count ]; then
+            echo "Your guess is too low. Try again!"
+        elif [ $guess -gt $file_count ]; then
+            echo "Your guess is too high. Try again!"
         else
-            echo "Congratulations! You've guessed the number in $attempts attempts."
+            echo "Congratulations! You guessed it right!"
         fi
     done
 }
 
 play_game
+
